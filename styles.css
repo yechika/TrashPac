@@ -71,7 +71,6 @@ button:active {
   top: 1px;
 }
 
-/* Characters */
 .grid-cell {
   position: absolute;
   width: 16px;
@@ -140,7 +139,6 @@ button:active {
   color: gold;
 }
 
-/* Coins */
 .Coin_sprite {
   background: url(/images/coin.png) no-repeat no-repeat;
   animation: coinFloat 0.8s linear infinite alternate-reverse;
@@ -152,3 +150,72 @@ button:active {
 .Coin_shadow {
   background: url(/images/coin-shadow.png) no-repeat no-repeat;
 }
+.mobile-controls {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+.mobile-controls .horizontal-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 10px;
+}
+.mobile-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px; 
+}
+
+.mobile-controls button:last-child {
+  margin-bottom: 0; 
+}
+
+
+/* Media query untuk tampilan seluler */
+@media only screen and (max-width: 600px) {
+  body {
+    overflow: hidden; /* Mencegah scroll pada tampilan seluler */
+  }
+  html {
+    font-size: 1rem; /* Mengatur ukuran font root menjadi 1rem */
+  }
+  .game-container {
+    position: relative;
+    order: 2; /* Mengatur urutan menjadi kedua */
+    transform: scale(1.9); /* Mengubah skala game-container */
+    width: 80vw; /* Mengatur lebar 80% dari lebar viewport */
+    margin-left: 114px; /* Mengatur margin otomatis untuk pemusatannya */
+  }
+
+  .player-info {
+    margin-top: 30px;
+    order: 1; /* Menambahkan margin bawah */
+  }
+
+  .mobile-controls {
+    transform: translateX(-50%);
+    padding-top: 80px;
+    padding-left: 268px;
+  }
+  .mobile-controls .horizontal-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+  }
+  
+
+}
+
