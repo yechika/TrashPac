@@ -183,39 +183,47 @@ button:active {
   margin-bottom: 0; 
 }
 
-
 /* Media query untuk tampilan seluler */
 @media only screen and (max-width: 600px) {
   body {
-    overflow: hidden; /* Mencegah scroll pada tampilan seluler */
+    overflow: hidden;
+    background-size: cover;
+    background-attachment: fixed;
   }
   html {
-    font-size: 1rem; /* Mengatur ukuran font root menjadi 1rem */
+    font-size: 1rem;
+    background-size: cover;
+    background-attachment: fixed;
   }
   .game-container {
     position: relative;
-    order: 2; /* Mengatur urutan menjadi kedua */
-    transform: scale(1.9); /* Mengubah skala game-container */
-    width: 80vw; /* Mengatur lebar 80% dari lebar viewport */
-    margin-left: 114px; /* Mengatur margin otomatis untuk pemusatannya */
+    order: 2;
+    transform: scale(1.9); 
   }
 
   .player-info {
     margin-top: 30px;
-    order: 1; /* Menambahkan margin bawah */
+    order: 1;
   }
 
   .mobile-controls {
-    transform: translateX(-50%);
-    padding-top: 80px;
-    padding-left: 268px;
+    order: 1;
+    padding-top: 50px;
+    margin-top: 60%;
+    margin-right: 25%;
+    margin-left: 75%;
   }
+
   .mobile-controls .horizontal-controls {
     display: flex;
     justify-content: space-between;
     gap: 50px;
   }
-  
-
 }
+
+
+
+
+
+
 
