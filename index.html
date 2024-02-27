@@ -19,7 +19,18 @@
         <button id="player-color">Change Color</button>
       </div>
     </div>
+    
+    <div class="mobile-controls">
+      <button onclick="simulateKeyPress('ArrowUp')">↑</button>
+      <div class="horizontal-controls">
+        <button onclick="simulateKeyPress('ArrowLeft')">←</button>
+        <button onclick="simulateKeyPress('ArrowRight')">→</button>
+      </div>
+      <button onclick="simulateKeyPress('ArrowDown')">↓</button>
+    </div>
 
+    
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -38,6 +49,26 @@
       firebase.initializeApp(firebaseConfig);
     </script>
 
+    <script>
+      function simulateKeyPress(keyCode) {
+  var downEvent = new KeyboardEvent("keydown", {
+    bubbles : true,
+    cancelable : true,
+    key : keyCode,
+    code : keyCode
+  });
+  document.dispatchEvent(downEvent);
+
+  var upEvent = new KeyboardEvent("keyup", {
+    bubbles : true,
+    cancelable : true,
+    key : keyCode,
+    code : keyCode
+  });
+  document.dispatchEvent(upEvent);
+}
+
+    </script>
 
     <script src="/KeyPressListener.js"></script>
     <script src="/app.js"></script>
