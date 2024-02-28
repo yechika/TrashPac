@@ -208,10 +208,9 @@ button:active {
 
   .mobile-controls {
     order: 1;
-    padding-top: 50px;
-    margin-top: 60%;
-    margin-right: 5%;
-    margin-left: 75%;
+    position: fixed;
+    margin: 0 auto;
+    padding-top: 500px;
   }
 
   .mobile-controls .horizontal-controls {
