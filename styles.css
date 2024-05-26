@@ -1,19 +1,25 @@
 * {
-  box-sizing:border-box;
+  box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: linear-gradient(180deg, #64BEFF -50%, #6e96ff 69.71%, #2a65ff 150%);
-  font-family: 'Source Sans Pro', sans-serif;
+  background: linear-gradient(
+    180deg,
+    #64beff -50%,
+    #6e96ff 69.71%,
+    #2a65ff 150%
+  );
+  font-family: "Source Sans Pro", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.game-container { 
+.game-container {
   position: relative;
   width: 240px;
   height: 208px;
@@ -25,11 +31,11 @@ html, body {
 .player-info {
   position: absolute;
   top: 0;
-  left:0;
+  left: 0;
   padding: 1em;
   display: flex;
   gap: 0.5em;
-  align-items: flex-end
+  align-items: flex-end;
 }
 
 label {
@@ -88,7 +94,7 @@ button:active {
 .Character_you-arrow {
   display: none;
   position: absolute;
-  top:-18px;
+  top: -18px;
   left: 5px;
   width: 7px;
   height: 5px;
@@ -144,42 +150,20 @@ button:active {
   animation: coinFloat 0.8s linear infinite alternate-reverse;
 }
 @keyframes coinFloat {
-  from { transform: translateY(0) }
-  to { transform: translateY(5px) }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(5px);
+  }
 }
 .Coin_shadow {
   background: url(/images/coin-shadow.png) no-repeat no-repeat;
 }
-.mobile-controls {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 20px; 
-  flex-direction: column;
-  align-items: center; 
-}
-.mobile-controls .horizontal-controls {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 0 10px;
-}
-.mobile-controls button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4CAF50; 
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 10px; 
-}
 
-.mobile-controls button:last-child {
-  margin-bottom: 0; 
+
+.mobile-controls button {
+  opacity: 0;
 }
 
 @media only screen and (max-width: 600px) {
@@ -196,7 +180,7 @@ button:active {
   .game-container {
     position: relative;
     order: 2;
-    transform: scale(1.6); 
+    transform: scale(1.6);
     margin: 0 auto;
   }
 
@@ -210,13 +194,50 @@ button:active {
     position: fixed;
     left: 50%;
     padding-top: 500px;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    opacity: 1;
+    font-family: initial;
   }
 
   .mobile-controls .horizontal-controls {
     left: 50%;
     position: relative;
     gap: 50px;
-    transform: translateX(-90.5%); 
-
+    transform: translateX(-90.5%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 10px;
+  }
+  .mobile-controls button:last-child {
+    margin-bottom: 0;
+  }
+  .controller {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
   }
 }
