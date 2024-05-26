@@ -1,6 +1,5 @@
 <html>
   <head>
-    
     <title>AOL HCI</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -9,8 +8,7 @@
   </head>
   <body>
 
-    <div class="game-container">
-    </div>
+    <div class="game-container"></div>
     <div class="player-info">
       <div>
         <label for="player-name">Your Name</label>
@@ -21,7 +19,6 @@
       </div>
     </div>
     
-    
     <div class="mobile-controls">
       <button onclick="simulateKeyPress('ArrowUp')">↑</button>
       <div class="horizontal-controls">
@@ -31,13 +28,14 @@
       <button onclick="simulateKeyPress('ArrowDown')">↓</button>
     </div>
 
-    
+    <!-- Audio Elements -->
+    <audio id="walk-sound" src="audio/walk.mp3"></audio>
+    <audio id="claim-coin-sound" src="audio/claimCoin.mp3"></audio>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-      // NOTE - INCLUDE YOUR FIREBASE CONFIG HERE FOR ANYTHING TO WORK:
       const firebaseConfig = {
         apiKey: "AIzaSyA5CfnZRNQSH6cM-_Z2zpXm8ZsxMMCw_Vw",
         authDomain: "hciproject-c0852.firebaseapp.com",
@@ -53,23 +51,22 @@
 
     <script>
       function simulateKeyPress(keyCode) {
-  var downEvent = new KeyboardEvent("keydown", {
-    bubbles : true,
-    cancelable : true,
-    key : keyCode,
-    code : keyCode
-  });
-  document.dispatchEvent(downEvent);
+        var downEvent = new KeyboardEvent("keydown", {
+          bubbles: true,
+          cancelable: true,
+          key: keyCode,
+          code: keyCode
+        });
+        document.dispatchEvent(downEvent);
 
-  var upEvent = new KeyboardEvent("keyup", {
-    bubbles : true,
-    cancelable : true,
-    key : keyCode,
-    code : keyCode
-  });
-  document.dispatchEvent(upEvent);
-}
-
+        var upEvent = new KeyboardEvent("keyup", {
+          bubbles: true,
+          cancelable: true,
+          key: keyCode,
+          code: keyCode
+        });
+        document.dispatchEvent(upEvent);
+      }
     </script>
 
     <script src="/KeyPressListener.js"></script>
