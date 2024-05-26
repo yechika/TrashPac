@@ -201,11 +201,7 @@ function getRandomSafeSpot() {
       playerRef.update({ color: nextColor });
     });
 
-    playerColorButton.addEventListener("touchstart", () => {
-      const mySkinIndex = playerColors.indexOf(players[playerId].color);
-      const nextColor = playerColors[mySkinIndex + 1] || playerColors[0];
-      playerRef.update({ color: nextColor });
-    });
+    
 
     placeCoin();
   }
