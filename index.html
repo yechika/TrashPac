@@ -42,6 +42,19 @@
       .start-screen p {
         margin-top: 80px;
       }
+      
+      .floating {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
 
       .player-info div {
         display: flex;
@@ -53,7 +66,7 @@
     <div class="start-screen">
       <h1>TrashPac</h1>
       <button id="start-game-btn">Play Game!</button>
-      <p>Objective: Collect as much trash as possible!</p>
+      <p class="floating">Objective: Collect as much trash as possible!</p>
     </div>
 
     <div class="game-container" style="display: none"></div>
@@ -120,23 +133,17 @@
       document
         .getElementById("start-game-btn")
         .addEventListener("click", function () {
-          var audio = new Audio("audio/lagu.mp3");
-          audio.loop = true;
-          audio.play();
           document.querySelector(".start-screen").style.display = "none";
           document.querySelector(".game-container").style.display = "block";
           document.querySelector(".player-info").style.display = "block";
           document.querySelector(".mobile-controls").style.display = "block";
-          document.querySelector(".mobile-controls").style.display = "block";
-        });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        var audio = new Audio("audio/lagu.mp3");
-        audio.loop = true;
-        audio.play().catch(function (error) {
-          console.error("Audio playback was prevented:", error);
+          var audio = new Audio("audio/lagu.mp3");
+          audio.loop = true;
+          audio.play().catch(function(error) {
+            console.error("Audio playback was prevented:", error);
+          });
         });
-      });
     </script>
 
     <script src="/KeyPressListener.js"></script>
