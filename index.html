@@ -50,13 +50,6 @@
     </style>
   </head>
   <body>
-    <!-- Backsound Audio -->
-    <audio autoplay loop>
-      <source src="audio/lagu.mp3" type="audio/mp3">
-      Your browser does not support the audio element.
-    </audio>
-    
-
     <div class="start-screen">
       <h1>TrashPac</h1>
       <button id="start-game-btn">Play Game!</button>
@@ -136,7 +129,13 @@
 
     <script src="/KeyPressListener.js"></script>
     <script src="/TouchEventListener.js"></script>
-    <!-- Tambahkan file TouchEventListener.js -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var audio = new Audio("audio/lagu.mp3");
+        audio.loop=true;
+        audio.play();
+      });
+    </script>
     <script src="/app.js"></script>
   </body>
 </html>
