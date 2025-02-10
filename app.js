@@ -81,7 +81,7 @@ function getRandomSafeSpot() {
       firebase.database().ref(`coins/${key}`).remove();
       playerRef.update({ coins: players[playerId].coins + 1 });
   
-      // Buat elemen audio baru dan putar suara pengambilan koin
+      
       const claimCoinSound = new Audio('audio/claimCoin.mp3');
       claimCoinSound.play();
     }
