@@ -12,55 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" type="text/css" />
-    <style>
-      .start-screen {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #64beff;
-        color: white;
-        font-family: "Source Sans Pro", sans-serif;
-      }
-      .start-screen h1 {
-        font-size: 5rem;
-        margin-bottom: 10px;
-        text-align: center;
-      }
-      .start-screen button {
-        padding: 10px 20px;
-        background-color: #59ff5a;
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-      }
-      .start-screen p {
-        margin-top: 80px;
-      }
-      
-      .floating {
-        animation: float 3s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0%, 100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-
-      .player-info div {
-        display: flex;
-        flex-direction: column;
-      }
-    </style>
+    <link rel="stylesheet" href="/mainmenu.css" type="text/css" />
   </head>
   <body>
     <div class="start-screen">
@@ -91,61 +43,14 @@
 
     <!-- Audio Elements -->
     <audio id="walk-sound" src="audio/walk.mp3"></audio>
-    <audio id="claim-coin-sound" src="audio/claimCoin.mp3"></audio>
+    <audio id="claim-trash-sound" src="audio/claimTrash.mp3"></audio>
 
+    <!-- Scriptssss -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyA5CfnZRNQSH6cM-_Z2zpXm8ZsxMMCw_Vw",
-        authDomain: "hciproject-c0852.firebaseapp.com",
-        databaseURL:
-          "https://hciproject-c0852-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "hciproject-c0852",
-        storageBucket: "hciproject-c0852.appspot.com",
-        messagingSenderId: "709136135174",
-        appId: "1:709136135174:web:84f327a5ab81a129883f87",
-        measurementId: "G-23G7VWR3WD",
-      };
-      firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <script>
-      function simulateKeyPress(keyCode) {
-        var downEvent = new KeyboardEvent("keydown", {
-          bubbles: true,
-          cancelable: true,
-          key: keyCode,
-          code: keyCode,
-        });
-        document.dispatchEvent(downEvent);
-
-        var upEvent = new KeyboardEvent("keyup", {
-          bubbles: true,
-          cancelable: true,
-          key: keyCode,
-          code: keyCode,
-        });
-        document.dispatchEvent(upEvent);
-      }
-
-      document
-        .getElementById("start-game-btn")
-        .addEventListener("click", function () {
-          document.querySelector(".start-screen").style.display = "none";
-          document.querySelector(".game-container").style.display = "block";
-          document.querySelector(".player-info").style.display = "block";
-          document.querySelector(".mobile-controls").style.display = "block";
-
-          var audio = new Audio("audio/lagu.mp3");
-          audio.loop = true;
-          audio.play().catch(function(error) {
-            console.error("Audio playback was prevented:", error);
-          });
-        });
-    </script>
-
+    <script src="/firebase-config.js"></script>
+    <script src="/game.js"></script>
     <script src="/KeyPressListener.js"></script>
     <script src="/TouchEventListener.js"></script>
     <script src="/app.js"></script>
