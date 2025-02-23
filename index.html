@@ -32,6 +32,31 @@
       </div>
     </div>
 
+    <!-- Timer -->
+    <div class="timer-container" style="display: none">
+      <div class="timer-wrapper">
+        <span id="timer">01:00</span>
+      </div>
+    </div>
+
+    <!-- Current Round -->
+    <div class="round-container" style="display: none"></div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-container" style="display: none">
+      <h2>Leaderboard</h2>
+      <div id="leaderboard-list"></div>
+    </div>
+
+    <!-- Final Leaderboard -->
+    <div class="round-end-popup" style="display: none">
+      <h2>Round Complete!</h2>
+      <div class="final-leaderboard"></div>
+      <button id="next-round-btn">Next Round</button>
+      <div id="players-ready"></div>
+    </div>
+
+    <!-- Mobile Controller -->
     <div class="mobile-controls" style="display: none">
       <button onclick="simulateKeyPress('ArrowUp')">↑</button>
       <div class="horizontal-controls">

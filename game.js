@@ -23,6 +23,9 @@ document
     document.querySelector(".game-container").style.display = "block";
     document.querySelector(".player-info").style.display = "block";
     document.querySelector(".mobile-controls").style.display = "block";
+    document.querySelector(".timer-container").style.display = "block";
+    document.querySelector(".round-container").style.display = "block";
+    document.querySelector(".leaderboard-container").style.display = "block";
 
     var audio = new Audio("audio/lagu.mp3");
     audio.loop = true;

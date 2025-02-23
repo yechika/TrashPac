@@ -114,13 +114,129 @@ function getRandomSafeSpot() {
   let playerElements = {};
   let trash = {};
   let trashElements = {};
+  let gameTimer;
+  let canMove = true;
+  let timeRemaining = 60;
+  let round = 1;
 
   const gameContainer = document.querySelector(".game-container");
   const playerNameInput = document.querySelector("#player-name");
   const playerColorButton = document.querySelector("#player-color");
+  const roundEndPopup = document.querySelector(".round-end-popup");
+  const finalLeaderboard = document.querySelector(".final-leaderboard");
+  const rounds = document.querySelector(".round-container");
 
+  const timerDisplay = document.getElementById("timer");
+  const leaderboardList = document.getElementById("leaderboard-list");
+  const nextRoundBtn = document.getElementById("next-round-btn");
   const walkSound = document.getElementById("walk-sound");
-  const claimCoinSound = document.getElementById("claim-coin-sound");
+
+  function endRound() {
+    clearInterval(gameTimer);
+
+    canMove = false;
+
+    const allTrashRef = firebase.database().ref("trash");
+    allTrashRef.remove();
+
+    Object.values(trashElements).forEach((element) => {
+      if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    });
+    trashElements = {};
+    // Update final leaderboard
+    const allPlayersRef = firebase.database().ref(`players`);
+    allPlayersRef.orderByChild("trash").once("value", (snapshot) => {
+      const players = [];
+      snapshot.forEach((child) => {
+        players.push({
+          name: child.val().name,
+          trash: child.val().trash
+        });
+      });
+
+      players.sort((a, b) => b.trash - a.trash);
+
+      finalLeaderboard.innerHTML = `
+      <h3>Final Scores</h3>
+      ${players
+        .map(
+          (player, index) => `
+          <div class="leaderboard-item">
+          <span>#${index + 1} ${player.name}</span>
+          <span>${player.trash}</span>
+          </div>
+          `
+        )
+        .join("")}
+        `;
+    });
+
+    roundEndPopup.style.display = "block";
+    roundEndPopup.classList.add("active");
+  }
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
+  function startTimer() {
+    timeRemaining = 12;
+    updateTimerDisplay();
+
+    gameTimer = setInterval(() => {
+      timeRemaining--;
+      updateTimerDisplay();
+
+      if (timeRemaining <= 0) {
+        endRound();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    timerDisplay.textContent = formatTime(timeRemaining);
+  }
+
+  function updateLeaderboard() {
+    const allPlayersRef = firebase.database().ref(`players`);
+
+    allPlayersRef.orderByChild("trash").once("value", (snapshot) => {
+      const players = [];
+      snapshot.forEach((child) => {
+        players.push({
+          name: child.val().name,
+          trash: child.val().trash
+        });
+      });
+
+      // Sort players by trash count
+      players.sort((a, b) => b.trash - a.trash);
+
+      // Update leaderboard display
+      leaderboardList.innerHTML = players
+        .map(
+          (player) => `
+          <div class="leaderboard-item">
+            <span>${player.name}</span>
+            <span>${player.trash}</span>
+          </div>
+        `
+        )
+        .join("");
+    });
+  }
+
+  function updateRound(round) {
+    rounds.innerHTML = `
+      <span id="round">Round ${round}</span>
+    `;
+  }
 
   function placeTrash() {
     const { x, y } = getRandomSafeSpot();
@@ -144,7 +260,25 @@ function getRandomSafeSpot() {
     }
   }
 
+  function startNewRound() {
+    roundEndPopup.style.display = "none";
+    roundEndPopup.classList.remove("active");
+
+    canMove = true;
+
+    startTimer();
+
+    // Reset trash positions but keep player scores
+    const allTrashRef = firebase.database().ref(`trash`);
+    allTrashRef.remove().then(() => {
+      placeTrash();
+    });
+    round++;
+    updateRound(round);
+  }
+
   function handleArrowPress(xChange = 0, yChange = 0) {
+    if (!canMove) return;
     const newX = players[playerId].x + xChange;
     const newY = players[playerId].y + yChange;
     if (!isSolid(newX, newY)) {
@@ -173,8 +307,15 @@ function getRandomSafeSpot() {
     new KeyPressListener("KeyA", () => handleArrowPress(-1, 0));
     new KeyPressListener("KeyD", () => handleArrowPress(1, 0));
 
+    startTimer();
+    updateRound(round);
+
     const allPlayersRef = firebase.database().ref(`players`);
     const allTrashRef = firebase.database().ref(`trash`);
+
+    allPlayersRef.on("value", () => {
+      updateLeaderboard();
+    });
 
     allPlayersRef.on("value", (snapshot) => {
       players = snapshot.val() || {};
@@ -199,13 +340,13 @@ function getRandomSafeSpot() {
         characterElement.classList.add("you");
       }
       characterElement.innerHTML = `
-        <div class="Character_shadow grid-cell"></div>
-        <div class="Character_sprite grid-cell"></div>
-        <div class="Character_name-container">
-          <span class="Character_name"></span>
-          <span class="Character_trash">0</span>
-        </div>
-        <div class="Character_you-arrow"></div>
+      <div class="Character_shadow grid-cell"></div>
+      <div class="Character_sprite grid-cell"></div>
+      <div class="Character_name-container">
+      <span class="Character_name"></span>
+      <span class="Character_trash">0</span>
+      </div>
+      <div class="Character_you-arrow"></div>
       `;
       playerElements[addedPlayer.id] = characterElement;
 
@@ -269,30 +410,33 @@ function getRandomSafeSpot() {
       const nextColor = playerColors[mySkinIndex + 1] || playerColors[0];
       playerRef.update({ color: nextColor });
     });
-
     placeTrash();
+
+    nextRoundBtn.addEventListener("click", startNewRound);
   }
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      playerId = user.uid;
-      playerRef = firebase.database().ref(`players/${playerId}`);
-      const name = createName();
-      playerNameInput.value = name;
-      const { x, y } = getRandomSafeSpot();
-      playerRef.set({
-        id: playerId,
-        name,
-        direction: "right",
-        color: randomFromArray(playerColors),
-        x,
-        y,
-        trash: 0
-      });
-      playerRef.onDisconnect().remove();
-      initGame();
-    } else {
-    }
+  document.getElementById("start-game-btn").addEventListener("click", () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        playerId = user.uid;
+        playerRef = firebase.database().ref(`players/${playerId}`);
+        const name = createName();
+        playerNameInput.value = name;
+        const { x, y } = getRandomSafeSpot();
+        playerRef.set({
+          id: playerId,
+          name,
+          direction: "right",
+          color: randomFromArray(playerColors),
+          x,
+          y,
+          trash: 0
+        });
+        playerRef.onDisconnect().remove();
+        initGame();
+      } else {
+      }
+    });
   });
 
   firebase

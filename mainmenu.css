@@ -41,8 +41,3 @@
     transform: translateY(-10px);
   }
 }
-
-.player-info div {
-  display: flex;
-  flex-direction: column;
-}
