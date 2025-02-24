@@ -242,6 +242,12 @@ button:active {
   background: url(/images/trash.png) no-repeat no-repeat;
   animation: coinFloat 0.8s linear infinite alternate-reverse;
 }
+
+.trash_sprite.banana {
+  background: url(/images/banana.png) no-repeat no-repeat;
+  animation: coinFloat 0.8s linear infinite alternate-reverse;
+}
+
 @keyframes coinFloat {
   from {
     transform: translateY(0);

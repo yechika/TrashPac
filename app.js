@@ -131,6 +131,11 @@ function getRandomSafeSpot() {
   const nextRoundBtn = document.getElementById("next-round-btn");
   const walkSound = document.getElementById("walk-sound");
 
+  const TRASH_TYPES = {
+    BOTTLE: "bottle",
+    BANANA: "banana"
+  };
+
   function endRound() {
     clearInterval(gameTimer);
 
@@ -186,7 +191,7 @@ function getRandomSafeSpot() {
   }
 
   function startTimer() {
-    timeRemaining = 12;
+    timeRemaining = 30;
     updateTimerDisplay();
 
     gameTimer = setInterval(() => {
@@ -241,19 +246,25 @@ function getRandomSafeSpot() {
   function placeTrash() {
     const { x, y } = getRandomSafeSpot();
     const trashRef = firebase.database().ref(`trash/${getKeyString(x, y)}`);
-    trashRef.set({ x, y });
 
-    const trashTimeouts = [2000, 3000, 4000, 5000];
+    const isBanana = Math.random() < 0.2;
+    const trashType = isBanana ? TRASH_TYPES.BANANA : TRASH_TYPES.BOTTLE;
+
+    trashRef.set({ x, y, type: trashType });
+
+    const trashTimeouts = [1000];
     setTimeout(() => {
       placeTrash();
-    }, randomFromArray(trashTimeouts));
+    }, trashTimeouts);
   }
 
   function attemptGrabTrash(x, y) {
     const key = getKeyString(x, y);
     if (trash[key]) {
+      const trashItem = trash[key];
+      const pointsToAdd = trashItem.type === TRASH_TYPES.BANANA ? 2 : 1;
       firebase.database().ref(`trash/${key}`).remove();
-      playerRef.update({ trash: players[playerId].trash + 1 });
+      playerRef.update({ trash: players[playerId].trash + pointsToAdd });
 
       const claimTrashSound = new Audio("audio/claimTrash.mp3");
       claimTrashSound.play();
@@ -373,19 +384,25 @@ function getRandomSafeSpot() {
     });
 
     allTrashRef.on("child_added", (snapshot) => {
-      const trash = snapshot.val();
-      const key = getKeyString(trash.x, trash.y);
-      trash[key] = true;
+      let trashIndeed;
+      const trashData = snapshot.val();
+      const key = getKeyString(trashData.x, trashData.y);
+      trash[key] = trashData;
 
       const trashElement = document.createElement("div");
       trashElement.classList.add("trash", "grid-cell");
+
       trashElement.innerHTML = `
-        <div class="trash_shadow grid-cell"></div>
-        <div class="trash_sprite grid-cell"></div>
+      <div class="trash_shadow grid-cell"></div>
+      <div class="trash_sprite grid-cell"></div>
       `;
 
-      const left = 16 * trash.x + "px";
-      const top = 16 * trash.y - 4 + "px";
+      if (trashData.type === TRASH_TYPES.BANANA) {
+        trashElement.querySelector(".trash_sprite").classList.add("banana");
+      }
+
+      const left = 16 * trashData.x + "px";
+      const top = 16 * trashData.y - 4 + "px";
       trashElement.style.transform = `translate3d(${left}, ${top}, 0)`;
 
       trashElements[key] = trashElement;
