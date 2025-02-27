@@ -20,12 +20,34 @@ body {
 }
 
 .game-container {
-  position: relative;
+  position: absolute;
   width: 240px;
   height: 208px;
   background: url(/images/map.png) no-repeat no-repeat;
   transform: scale(3);
   image-rendering: pixelated;
+}
+
+.waiting-popup, .countdown-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.countdown-popup {
+  font-size: 5rem;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .player-info {
@@ -36,6 +58,99 @@ body {
   display: flex;
   gap: 0.5em;
   align-items: flex-end;
+}
+
+.player-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-container {
+  position: fixed;
+  left: 1rem;
+  top: 8.3rem;
+  background: #59ff5a;
+  color: black;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-family: "Source Sans Pro", monospace;
+}
+
+.timer-wrapper {
+  text-align: center;
+}
+
+#timer {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.round-container {
+  position: fixed;
+  left: 1rem;
+  top: 13rem;
+  background: #59ff5a;
+  color: black;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-family: "Source Sans Pro", monospace;
+}
+
+#round {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.leaderboard-container {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  background: #59ff5a;
+  color: black;
+  padding: 1rem;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.leaderboard-container h2 {
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+  color: black;
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+  border-bottom: 1px solid white;
+}
+
+.round-end-popup {
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  background: #59ff5a;
+  color: black;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.round-end-popup button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background: white;
+  color: #59ff5a;
 }
 
 label {
@@ -140,15 +255,21 @@ button:active {
   text-transform: uppercase;
   white-space: nowrap;
 }
-.Character_coins {
+.Character_trash {
   margin-left: 1px;
   color: gold;
 }
 
-.Coin_sprite {
-  background: url(/images/coin.png) no-repeat no-repeat;
+.trash_sprite {
+  background: url(/images/trash.png) no-repeat no-repeat;
   animation: coinFloat 0.8s linear infinite alternate-reverse;
 }
+
+.trash_sprite.banana {
+  background: url(/images/banana.png) no-repeat no-repeat;
+  animation: coinFloat 0.8s linear infinite alternate-reverse;
+}
+
 @keyframes coinFloat {
   from {
     transform: translateY(0);
@@ -157,13 +278,16 @@ button:active {
     transform: translateY(5px);
   }
 }
-.Coin_shadow {
-  background: url(/images/coin-shadow.png) no-repeat no-repeat;
+.trash_shadow {
+  background: url(/images/trash-shadow.png) no-repeat no-repeat;
 }
-
 
 .mobile-controls button {
   opacity: 0;
+}
+
+.round-end-popup.active ~ .mobile-controls {
+  display: none !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -190,15 +314,61 @@ button:active {
     z-index: 10;
   }
 
+  .timer-container {
+    position: absolute;
+    left: 1rem;
+    top: 10rem;
+    padding: 10px 10px;
+    border-radius: 5px;
+  }
+
+  #timer {
+    font-size: 20px;
+  }
+
+  .round-container {
+    top: 13.5rem;
+    padding: 10px 10px;
+    border-radius: 5px;
+  }
+
+  #round {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .leaderboard-container {
+    background: #59ff5a;
+    color: black;
+    padding: 10px;
+    margin-top: 30px;
+    border-radius: 4px;
+    min-width: 200px;
+  }
+
+  .leaderboard-container h2 {
+    text-align: center;
+  }
+
+  .leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 5px 0;
+  }
+
+  .round-end-popup {
+    position: absolute;
+  }
+
   .mobile-controls {
     order: 1;
     position: fixed;
-    left: 50%;
+    left: calc(50% - 30px);
     padding-top: 500px;
-    position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    right: 20px;
+    right: 40px;
     flex-direction: column;
     align-items: center;
   }
@@ -235,7 +405,12 @@ button:active {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.8
+    ); /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
