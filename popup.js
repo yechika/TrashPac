@@ -1,4 +1,4 @@
-// Fungsi untuk menampilkan popup akhir ronde
+
 function showEndRoundModal(isHost) {
     const existingModal = document.querySelector('.end-round-modal');
     if (existingModal) {
@@ -22,8 +22,6 @@ function showEndRoundModal(isHost) {
     `;
 
     document.body.appendChild(modal);
-
-    // Add event listeners for buttons
     if (isHost) {
         modal.querySelector('.play-again-btn').addEventListener('click', () => {
             hideEndRoundModal();
@@ -60,30 +58,28 @@ function updateFinalLeaderboard(players) {
         .join('');
 }
 
-// Ganti fungsi showFinalLeaderboard menjadi:
 function showFinalLeaderboard() {
-    console.log("Showing final leaderboard"); // Debugging
+    console.log("Showing final leaderboard"); 
     firebase.database().ref("players").once("value").then((snapshot) => {
         const players = snapshot.val();
         if (players) {
             updateFinalLeaderboard(players);
-            showEndRoundModal(window.isHost); // Gunakan window.isHost
+            showEndRoundModal(window.isHost); 
         }
     }).catch(error => {
         console.error("Error fetching players:", error);
     });
 }
 
-// Perbaiki listener roundStatus
+
 firebase.database().ref("roundStatus").on("value", (snapshot) => {
-    console.log("Round status changed:", snapshot.val()); // Debugging
+    console.log("Round status changed:", snapshot.val()); 
     const roundStatus = snapshot.val();
     if (roundStatus && roundStatus.status === "ended") {
         showFinalLeaderboard();
     }
 });
 
-// Update the round status listener
 firebase.database().ref("gameState").on("value", (snapshot) => {
     const gameState = snapshot.val();
     if (gameState && gameState.status === "countdown") {

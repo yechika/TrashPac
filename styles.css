@@ -86,11 +86,10 @@ body {
   top: 17rem;
   z-index: 1000;
   background: #59ff5a !important;
-  border: none;
   cursor: pointer;
   border-radius: 8px;
   padding: 6px;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
   transition: background 0.2s;
   display: block;
 }
@@ -418,5 +417,88 @@ button:active {
     justify-content: center;
     align-items: center;
     padding: 10px 0;
+  }
+  @media only screen and (max-width: 600px) {
+    .leaderboard-container {
+      position: fixed;
+      right: 10px;
+      top: 20px;
+      padding: 8px;
+      margin-top: 0;
+      font-size: 0.7em;
+      min-width: 150px;
+    }
+    .player-info {
+      margin-top: 0;
+    }
+    .player-info input[type="text"] {
+      font-size: 1em;
+      height: 36px;
+      padding-left: 0.4em;
+    }
+
+    .player-info button {
+      font-size: 1em;
+      height: 36px;
+      padding: 0 1em;
+    }
+    .timer-container {
+      position: fixed;
+      left: 50%;
+      top: 2.5rem;
+      transform: translateX(-50%);
+      background: #fffbe6;
+      color: #222034;
+      padding: 0.7rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(34, 32, 52, 0.12);
+      z-index: 100;
+      min-width: 80px;
+      border: 2px solid #59ff5a;
+      margin-top: 80px;
+    }
+    .round-container {
+      position: fixed;
+      left: 17%;
+      top: 5.5rem;
+      transform: translateX(-50%);
+      background: #fffbe6;
+      color: #222034;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(34, 32, 52, 0.12);
+      z-index: 100;
+      min-width: 10px;
+      border: 2px solid #59ff5a;
+      margin-top: 35px;
+      text-align: center;
+    }
+
+    #round {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #222034;
+      letter-spacing: 2px;
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      display: block;
+    }
+    #mute-btn {
+     position: fixed;
+      left: 92%;
+      top: 5.5rem;
+      transform: translateX(-50%);
+      background: #fffbe6;
+      color: #222034;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(34, 32, 52, 0.12);
+      z-index: 100;
+      min-width: 10px;
+      border: 2px solid #59ff5a;
+      margin-top: 35px;
+      text-align: center;
+    }
   }
 }

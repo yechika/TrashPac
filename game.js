@@ -1,5 +1,5 @@
 function simulateKeyPress(keyCode) {
-  var downEvent = new KeyboardEvent("keydown", {
+  const downEvent = new KeyboardEvent("keydown", {
     bubbles: true,
     cancelable: true,
     key: keyCode,
@@ -7,7 +7,7 @@ function simulateKeyPress(keyCode) {
   });
   document.dispatchEvent(downEvent);
 
-  var upEvent = new KeyboardEvent("keyup", {
+  const upEvent = new KeyboardEvent("keyup", {
     bubbles: true,
     cancelable: true,
     key: keyCode,
@@ -28,9 +28,8 @@ document
     document.querySelector(".timer-container").style.display = "block";
     document.querySelector(".round-container").style.display = "block";
     document.querySelector(".leaderboard-container").style.display = "block";
-    document.getElementById("mute-btn").style.display = "block"; // Show mute button
+    document.getElementById("mute-btn").style.display = "block"; 
 
-    // Use a global variable for laguAudio so mute works
     if (!laguAudio) {
       laguAudio = new Audio("audio/lagu.mp3");
       laguAudio.loop = true;
@@ -40,12 +39,11 @@ document
     });
   });
 
-// Mute button logic
 const muteBtn = document.getElementById("mute-btn");
 const muteIcon = document.getElementById("mute-icon");
 let isMuted = false;
 
-// Helper to set mute state for all audio elements including laguAudio
+
 function setMuteAll(mute) {
   document.querySelectorAll("audio").forEach(audio => {
     audio.muted = mute;
@@ -61,5 +59,5 @@ muteBtn.addEventListener("click", function () {
   setMuteAll(isMuted);
 });
 
-// Optionally, set initial mute state on page load
+
 setMuteAll(isMuted);

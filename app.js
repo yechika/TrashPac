@@ -151,7 +151,6 @@ function getRandomSafeSpot() {
       }
     });
     trashElements = {};
-    // Update final leaderboard
     const allPlayersRef = firebase.database().ref(`players`);
     allPlayersRef.orderByChild("trash").once("value", (snapshot) => {
       const players = [];
@@ -242,10 +241,8 @@ function getRandomSafeSpot() {
         });
       });
 
-      // Sort players by trash count
       players.sort((a, b) => b.trash - a.trash);
 
-      // Update leaderboard display
       leaderboardList.innerHTML = players
         .map(
           (player) => `
@@ -301,13 +298,11 @@ function getRandomSafeSpot() {
 
     startTimer();
 
-    // Reset trash positions but keep player scores
     const allTrashRef = firebase.database().ref(`trash`);
     allTrashRef.remove().then(() => {
       placeTrash();
     });
 
-    // Reset all players' trash points to zero in the database
     const allPlayersRef = firebase.database().ref(`players`);
     allPlayersRef.once("value", (snapshot) => {
       snapshot.forEach((child) => {
