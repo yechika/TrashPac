@@ -144,6 +144,7 @@ body {
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid #222034; 
 }
 
 .round-end-popup button {
@@ -152,7 +153,7 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
   background: white;
-  color: #59ff5a;
+  color: #222034;
 }
 
 label {
